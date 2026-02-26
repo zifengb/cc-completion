@@ -45,7 +45,7 @@ def "nu-complete claude install-channel" [] {
 export extern claude [
     --debug(-d)                                             # Enable debug mode
     --debug-file: path                                      # Debug output file
-    --verbose(-v)                                           # Verbose output
+    --verbose                                               # Verbose output
     --print(-p)                                             # Print mode
     --output-format: string@"nu-complete claude output-format"  # Output format
     --json-schema: string                                   # JSON schema
@@ -89,7 +89,7 @@ export extern claude [
     --worktree(-w): string                                  # Git worktree
     --tmux                                                  # Tmux mode
     --effort: string@"nu-complete claude effort"            # Effort level
-    --version                                               # Show version
+    --version(-v)                                           # Show version
     --help(-h)                                              # Show help
     ...args: string                                         # Command or prompt
 ]
@@ -135,7 +135,7 @@ export extern "claude mcp add" [
     --header(-H): string                                        # Header
     --callback-port: int                                        # Callback port
     --client-id: string                                         # Client ID
-    --client-secret: string                                     # Client secret
+    --client-secret                                              # Client secret (interactive prompt)
     --help(-h)
     ...args: string
 ]
@@ -148,7 +148,7 @@ export extern "claude mcp add-from-claude-desktop" [
 
 export extern "claude mcp add-json" [
     --scope(-s): string@"nu-complete claude scope"
-    --client-secret: string
+    --client-secret                                              # Client secret (interactive prompt)
     --help(-h)
     ...args: string
 ]
