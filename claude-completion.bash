@@ -178,6 +178,19 @@ _claude_completion() {
                         "")
                             COMPREPLY=($(compgen -W "add list remove update --help -h" -- "$cur"))
                             ;;
+                        add)
+                            case "$prev" in
+                                --scope)
+                                    COMPREPLY=($(compgen -W "user project local" -- "$cur"))
+                                    ;;
+                                --sparse)
+                                    COMPREPLY=()
+                                    ;;
+                                *)
+                                    COMPREPLY=($(compgen -W "--scope --sparse --help -h" -- "$cur"))
+                                    ;;
+                            esac
+                            ;;
                         list)
                             COMPREPLY=($(compgen -W "--json --help -h" -- "$cur"))
                             ;;

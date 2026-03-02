@@ -75,7 +75,7 @@ export extern claude [
     --fallback-model: string@"nu-complete claude models"    # Fallback model
     --settings: path                                        # Settings file
     --add-dir: path                                         # Additional directory
-    --ide: string                                           # IDE integration
+    --ide                                                    # Automatically connect to IDE on startup
     --strict-mcp-config                                     # Strict MCP config
     --session-id: string                                    # Session ID
     --agents: string                                        # Agents config
@@ -85,7 +85,7 @@ export extern claude [
     --chrome                                                # Enable Chrome
     --no-chrome                                             # Disable Chrome
     --from-pr: string                                       # From PR
-    --file: path                                            # Input file
+    --file: string                                          # File resources (file_id:relative_path)
     --worktree(-w): string                                  # Git worktree
     --tmux                                                  # Tmux mode
     --effort: string@"nu-complete claude effort"            # Effort level
@@ -216,6 +216,8 @@ export extern "claude plugin marketplace" [
 ]
 
 export extern "claude plugin marketplace add" [
+    --scope: string@"nu-complete claude scope"              # Where to declare the marketplace
+    --sparse: string                                         # Limit checkout to specific directories
     --help(-h)
     ...args: string
 ]

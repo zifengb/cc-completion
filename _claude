@@ -232,6 +232,12 @@ _claude() {
                                             ;;
                                         mp_args)
                                             case $words[1] in
+                                                add)
+                                                    _arguments \
+                                                        '--scope[Where to declare the marketplace]:scope:(user project local)' \
+                                                        '--sparse[Limit checkout to specific directories via git sparse-checkout]:paths:' \
+                                                        {-h,--help}'[Display help for command]'
+                                                    ;;
                                                 list)
                                                     _arguments \
                                                         '--json[Output in JSON format]' \
