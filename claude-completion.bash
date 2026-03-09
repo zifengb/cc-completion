@@ -67,9 +67,13 @@ _claude_completion() {
             _filedir
             return 0
             ;;
+        --tools|--allowedTools|--allowed-tools|--disallowedTools|--disallowed-tools)
+            COMPREPLY=($(compgen -W "Bash Edit Read Write Glob Grep LS MultiEdit NotebookEdit NotebookRead WebFetch WebSearch Task TodoRead TodoWrite" -- "$cur"))
+            return 0
+            ;;
         --json-schema|--system-prompt|--append-system-prompt|--agents|\
-        --worktree|--max-budget-usd|--session-id|--debug|--from-pr|\
-        -r|--resume)
+        --worktree|--max-budget-usd|--session-id|--debug|-d|--from-pr|\
+        -r|--resume|--agent|--betas)
             COMPREPLY=()
             return 0
             ;;
