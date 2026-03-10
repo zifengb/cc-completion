@@ -36,6 +36,49 @@ _claude_completion() {
         fi
     done
 
+    # Option-specific value completion (must run before subcommand/global dispatch
+    # to avoid the [[ -z $cmd ]] early-return short-circuiting these cases)
+    case "$prev" in
+        --output-format)
+            COMPREPLY=($(compgen -W "text json stream-json" -- "$cur"))
+            return 0
+            ;;
+        --input-format)
+            COMPREPLY=($(compgen -W "text stream-json" -- "$cur"))
+            return 0
+            ;;
+        --permission-mode)
+            COMPREPLY=($(compgen -W "acceptEdits bypassPermissions default dontAsk plan auto" -- "$cur"))
+            return 0
+            ;;
+        --model|--fallback-model)
+            COMPREPLY=($(compgen -W "sonnet opus haiku claude-sonnet-4-6" -- "$cur"))
+            return 0
+            ;;
+        --setting-sources)
+            COMPREPLY=($(compgen -W "user project local" -- "$cur"))
+            return 0
+            ;;
+        --effort)
+            COMPREPLY=($(compgen -W "low medium high" -- "$cur"))
+            return 0
+            ;;
+        --mcp-config|--settings|--plugin-dir|--add-dir|--file|--debug-file)
+            _filedir
+            return 0
+            ;;
+        --tools|--allowedTools|--allowed-tools|--disallowedTools|--disallowed-tools)
+            COMPREPLY=($(compgen -W "Bash Edit Read Write Glob Grep LS MultiEdit NotebookEdit NotebookRead WebFetch WebSearch Task TodoRead TodoWrite" -- "$cur"))
+            return 0
+            ;;
+        --json-schema|--system-prompt|--append-system-prompt|--agents|\
+        --worktree|--max-budget-usd|--session-id|--debug|-d|--from-pr|\
+        -r|--resume|--agent|--betas)
+            COMPREPLY=()
+            return 0
+            ;;
+    esac
+
     # If we're completing the first argument (command or option)
     if [[ $cword -eq 1 ]] || [[ -z $cmd ]]; then
         case "$cur" in
@@ -270,68 +313,10 @@ _claude_completion() {
             COMPREPLY=($(compgen -W "--help -h" -- "$cur"))
             ;;
         install)
-            case "$prev" in
-                install)
-                    COMPREPLY=($(compgen -W "stable latest --force --help -h" -- "$cur"))
-                    ;;
-                *)
-                    COMPREPLY=($(compgen -W "stable latest --force --help -h" -- "$cur"))
-                    ;;
-            esac
+            COMPREPLY=($(compgen -W "stable latest --force --help -h" -- "$cur"))
             ;;
         agents)
-            case "$prev" in
-                --setting-sources)
-                    COMPREPLY=($(compgen -W "user project local" -- "$cur"))
-                    ;;
-                *)
-                    COMPREPLY=($(compgen -W "--setting-sources --help -h" -- "$cur"))
-                    ;;
-            esac
-            ;;
-    esac
-
-    # Option-specific value completion
-    case "$prev" in
-        --output-format)
-            COMPREPLY=($(compgen -W "text json stream-json" -- "$cur"))
-            ;;
-        --input-format)
-            COMPREPLY=($(compgen -W "text stream-json" -- "$cur"))
-            ;;
-        --permission-mode)
-            COMPREPLY=($(compgen -W "acceptEdits bypassPermissions default dontAsk plan auto" -- "$cur"))
-            ;;
-        --model|--fallback-model)
-            COMPREPLY=($(compgen -W "sonnet opus haiku claude-sonnet-4-6" -- "$cur"))
-            ;;
-        --setting-sources)
-            COMPREPLY=($(compgen -W "user project local" -- "$cur"))
-            ;;
-        --effort)
-            COMPREPLY=($(compgen -W "low medium high" -- "$cur"))
-            ;;
-        --json-schema|--system-prompt|--append-system-prompt|--agents)
-            # These expect custom input, don't suggest anything
-            COMPREPLY=()
-            ;;
-        --mcp-config|--settings|--plugin-dir|--add-dir|--file|--debug-file)
-            # File/directory completion
-            _filedir
-            ;;
-        --worktree|--max-budget-usd|--session-id|--debug|--from-pr)
-            # Custom values, no completion
-            COMPREPLY=()
-            ;;
-        -r|--resume)
-            # Could potentially list session IDs, but skip for now
-            COMPREPLY=()
-            ;;
-        *)
-            # Default: suggest global options if not in a subcommand
-            if [[ -z $cmd ]]; then
-                COMPREPLY=($(compgen -W "$global_opts" -- "$cur"))
-            fi
+            COMPREPLY=($(compgen -W "--setting-sources --help -h" -- "$cur"))
             ;;
     esac
 
